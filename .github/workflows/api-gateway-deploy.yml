@@ -102,17 +102,18 @@ jobs:
         max-attempts: 10
         retry-delay: 10s
         retry-all: true
-switch:    
-    needs:
-    - deploy
-    runs-on: ubuntu-latest
-    steps:
-    - name: Login to Azure
+        
+  switch:    
+      needs:
+      - deploy
+      runs-on: ubuntu-latest
+      steps:
+      - name: Login to Azure
         uses: azure/login@v1
         with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Swap the slot
+      - name: Swap the slot
         uses: azure/spring-cloud-deploy@v1
         with:
             azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
