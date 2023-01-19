@@ -26,29 +26,27 @@ jobs:
       run: |
         echo ${{ env.REPOSITORY_NAME }}
     - name: Set up JDK 11
-    uses: actions/setup-java@v2
-    with:
-        java-version: '11'
-        distribution: 'adopt'
-        cache: maven
-        
-        
+      uses: actions/setup-java@v2
+      with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven       
     - name: Maven build, clean
-    run: |
-        mvn clean package -DskipTests -Denv=cloud
+      run: |
+          mvn clean package -DskipTests -Denv=cloud
         
     - name: Login with Service SP
-    uses: azure/login@v1
-    with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      uses: azure/login@v1
+      with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Deploy api-gateway
-    uses: Azure/spring-cloud-deploy@v1
-    with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-        action: deploy
-        service-name: ${{ env.SPRING_APPS_SERVICE }}
-        app-name: ${{ env.API_GATEWAY }}
-        use-staging-deployment: false
-        package: ${{ github.workspace }}/${{ env.API_GATEWAY_JAR }}
-        jvm-options: -Xms1024m -Xmx1024m -Dspring.profiles.active=azure    
+      uses: Azure/spring-cloud-deploy@v1
+      with:
+          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+          action: deploy
+          service-name: ${{ env.SPRING_APPS_SERVICE }}
+          app-name: ${{ env.API_GATEWAY }}
+          use-staging-deployment: false
+          package: ${{ github.workspace }}/${{ env.API_GATEWAY_JAR }}
+          jvm-options: -Xms1024m -Xmx1024m -Dspring.profiles.active=azure    
